@@ -64,10 +64,10 @@ struct BabyTrackerView: View {
                     if vm.isLoading && vm.logs.isEmpty {
                         ProgressView()
                     } else if vm.filteredLogs.isEmpty {
-                        ContentUnavailableView(
-                            "No Logs",
+                        EmptyStateView(
+                            title: "No Logs",
                             systemImage: "figure.and.child.holdinghands",
-                            description: Text("Tap + to log a feed, sleep, or diaper")
+                            description: "Tap + to log a feed, sleep, or diaper"
                         )
                     } else {
                         ForEach(vm.logsByDay, id: \.day) { group in

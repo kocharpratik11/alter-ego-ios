@@ -36,9 +36,9 @@ struct AlterEgoShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: VoiceCommandIntent(),
             phrases: [
-                "Tell \(.applicationName) \(\.$command)",
-                "\(.applicationName) \(\.$command)",
-                "Ask \(.applicationName) to \(\.$command)"
+                "Tell \(.applicationName)",
+                "Open \(.applicationName)",
+                "\(.applicationName) command"
             ],
             shortTitle: "Tell Alter Ego",
             systemImageName: "waveform.badge.mic"

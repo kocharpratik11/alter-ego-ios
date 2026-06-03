@@ -15,6 +15,7 @@ targets:
       - path: AlterEgo
         excludes:
           - "**/*.md"
+          - "**/*.txt"
 
     settings:
       base:
@@ -24,15 +25,27 @@ targets:
         CURRENT_PROJECT_VERSION: "1"
         DEVELOPMENT_TEAM: ""        # ← Set your Apple Team ID here
         INFOPLIST_FILE: AlterEgo/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
     info:
       path: AlterEgo/Info.plist
       properties:
         CFBundleName: Alter Ego
         CFBundleDisplayName: Alter Ego
+        CFBundleIconName: AppIcon
         NSMicrophoneUsageDescription: "Alter Ego uses the microphone to process Siri voice commands."
         NSSpeechRecognitionUsageDescription: "Alter Ego uses speech recognition to process your voice commands."
         UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
         UIBackgroundModes:
           - audio
         NSAppTransportSecurity:

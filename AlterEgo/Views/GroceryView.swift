@@ -50,10 +50,10 @@ struct GroceryView: View {
                         }
 
                         if vm.groupedItems.isEmpty && vm.purchasedItems.isEmpty {
-                            ContentUnavailableView(
-                                "No Items",
+                            EmptyStateView(
+                                title: "No Items",
                                 systemImage: "cart",
-                                description: Text("Add items using the + button or Siri")
+                                description: "Add items using the + button or Siri"
                             )
                         }
                     }

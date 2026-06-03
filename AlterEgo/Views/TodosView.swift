@@ -11,10 +11,10 @@ struct TodosView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if vm.openTodos.isEmpty {
-                    ContentUnavailableView(
-                        "All caught up!",
+                    EmptyStateView(
+                        title: "All caught up!",
                         systemImage: "checkmark.seal.fill",
-                        description: Text("No open tasks. Nice work.")
+                        description: "No open tasks. Nice work."
                     )
                 } else {
                     List {

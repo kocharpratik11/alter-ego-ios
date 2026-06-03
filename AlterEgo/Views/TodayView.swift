@@ -205,6 +205,28 @@ struct SectionCard<Content: View>: View {
     }
 }
 
+struct EmptyStateView: View {
+    let title: String
+    let systemImage: String
+    let description: String
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: systemImage)
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+            Text(title)
+                .font(.headline)
+            Text(description)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(40)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
 struct PriorityBadge: View {
     let priority: String
 

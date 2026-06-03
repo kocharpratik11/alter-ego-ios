@@ -176,10 +176,10 @@ struct DayHeader: View {
         VStack(spacing: 2) {
             Text(df.string(from: date))
                 .font(.caption2.bold())
-                .foregroundStyle(Calendar.current.isDateInToday(date) ? .accentColor : .secondary)
+                .foregroundStyle(Calendar.current.isDateInToday(date) ? Color.accentColor : Color.secondary)
             Text("\(Calendar.current.component(.day, from: date))")
                 .font(.subheadline.bold())
-                .foregroundStyle(Calendar.current.isDateInToday(date) ? .accentColor : .primary)
+                .foregroundStyle(Calendar.current.isDateInToday(date) ? Color.accentColor : Color.primary)
         }
         .padding(.bottom, 4)
     }

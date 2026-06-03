@@ -17,22 +17,34 @@ final class SupabaseService {
 
         decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        // Supabase returns timestamps like "2024-01-15T10:30:00.123456+00:00"
+        // DateFormatter's Z specifier does NOT handle "+00:00" — only "+0000".
+        // ISO8601DateFormatter handles both formats correctly.
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let str = try container.decode(String.self)
-            // ISO8601 with fractional seconds
-            let formats = [
-                "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ",
-                "yyyy-MM-dd'T'HH:mm:ssZ",
-                "yyyy-MM-dd"
-            ]
+
+            let iso = ISO8601DateFormatter()
+
+            // With fractional seconds: "2024-01-15T10:30:00.123456+00:00"
+            iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = iso.date(from: str) { return date }
+
+            // Without fractional seconds: "2024-01-15T10:30:00+00:00"
+            iso.formatOptions = [.withInternetDateTime]
+            if let date = iso.date(from: str) { return date }
+
+            // Date only: "2024-01-15"
             let df = DateFormatter()
-            df.locale = Locale(identifier: "en_US_POSIX")
-            for fmt in formats {
-                df.dateFormat = fmt
-                if let date = df.date(from: str) { return date }
-            }
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot parse date: \(str)")
+            df.locale   = Locale(identifier: "en_US_POSIX")
+            df.timeZone = TimeZone(identifier: "UTC")
+            df.dateFormat = "yyyy-MM-dd"
+            if let date = df.date(from: str) { return date }
+
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Cannot parse date: \(str)"
+            )
         }
 
         encoder = JSONEncoder()

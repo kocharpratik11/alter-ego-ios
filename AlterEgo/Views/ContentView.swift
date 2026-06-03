@@ -28,6 +28,6 @@ struct ContentView: View {
                     Label("Todos", systemImage: "checklist")
                 }
         }
-        .tint(Color("AccentGreen"))
+        .tint(Color(red: 74/255, green: 155/255, blue: 127/255))
     }
 }

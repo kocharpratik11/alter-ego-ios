@@ -10,9 +10,11 @@
 		0132EB0E13282B5FF42D067B /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD374E7724CE91795D1A1AD2 /* TodayView.swift */; };
 		1D4E1ED639FC22E899130B23 /* MealsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F8B2A2F8FE76A9E5FDBE13 /* MealsViewModel.swift */; };
 		231FABEEE74B270E43543502 /* ClaudeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31B98C0EFCDF61F2A5942F8 /* ClaudeService.swift */; };
+		320ED9D86C740F809816BF3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE7ED4923E2F79544F8C930 /* Assets.xcassets */; };
 		39DDA6A76814C180960050F2 /* BabyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD31254820A36BF83D033C2D /* BabyViewModel.swift */; };
 		45BC0CA570A905B8AA89B435 /* MealModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21214BB3FC809D516D5311A /* MealModels.swift */; };
 		4C823F41933BE9EB62380DA2 /* MealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5278645E3AC33B2EB863679D /* MealsView.swift */; };
+		4EB8F35B7DC298A5E3D6D45E /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E349540A5B1F43118CE9039 /* Secrets.swift */; };
 		53EA034C7F7080911160E152 /* GroceryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CA79C5000CF0C8FB1CA8C /* GroceryViewModel.swift */; };
 		5C5CB1F7BA76B9C62A3EEF7B /* GroceryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB67A28844883C541A203B44 /* GroceryItem.swift */; };
 		825834416B98EA979888D20A /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C232398FAF0DCFEB12828E /* AppUser.swift */; };
@@ -37,6 +39,8 @@
 		3C6CA79C5000CF0C8FB1CA8C /* GroceryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryViewModel.swift; sourceTree = "<group>"; };
 		5278645E3AC33B2EB863679D /* MealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsView.swift; sourceTree = "<group>"; };
 		57107EFCCEB143190A1B1D26 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		5DE7ED4923E2F79544F8C930 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8E349540A5B1F43118CE9039 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		A21214BB3FC809D516D5311A /* MealModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealModels.swift; sourceTree = "<group>"; };
 		A8C901E14DA47C5441203033 /* TodosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosView.swift; sourceTree = "<group>"; };
 		AD374E7724CE91795D1A1AD2 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				ADE5FBBF332AE8DB38EF0864 /* AlterEgoApp.swift */,
+				5DE7ED4923E2F79544F8C930 /* Assets.xcassets */,
 				C25175D7F29B7047EB53C8EF /* Info.plist */,
 				8FE0DCB336E4DB0B7A4D153C /* Config */,
 				CB2F301D508249403A6622AF /* Intents */,
@@ -94,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				FDEFF19EF7282AD149E9E6D2 /* Config.swift */,
+				8E349540A5B1F43118CE9039 /* Secrets.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -155,6 +161,7 @@
 			buildConfigurationList = D2055EE346D1F38290009AFF /* Build configuration list for PBXNativeTarget "AlterEgo" */;
 			buildPhases = (
 				8B2B34CA92091E5876D76C47 /* Sources */,
+				4ABA90F0C423BDE3B783EF6C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -195,6 +202,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		4ABA90F0C423BDE3B783EF6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				320ED9D86C740F809816BF3F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8B2B34CA92091E5876D76C47 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -214,6 +232,7 @@
 				45BC0CA570A905B8AA89B435 /* MealModels.swift in Sources */,
 				4C823F41933BE9EB62380DA2 /* MealsView.swift in Sources */,
 				1D4E1ED639FC22E899130B23 /* MealsViewModel.swift in Sources */,
+				4EB8F35B7DC298A5E3D6D45E /* Secrets.swift in Sources */,
 				A1D999F42264FF6C2066B339 /* SupabaseService.swift in Sources */,
 				0132EB0E13282B5FF42D067B /* TodayView.swift in Sources */,
 				97438AEF92087635D2BC5E3B /* Todo.swift in Sources */,
