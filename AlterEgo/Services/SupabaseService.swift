@@ -34,10 +34,10 @@ final class SupabaseService {
             iso.formatOptions = [.withInternetDateTime]
             if let date = iso.date(from: str) { return date }
 
-            // Date only: "2024-01-15"
+            // Date only: "2024-01-15" — use local timezone so date strings
+            // match what Calendar.current.startOfDay() produces.
             let df = DateFormatter()
-            df.locale   = Locale(identifier: "en_US_POSIX")
-            df.timeZone = TimeZone(identifier: "UTC")
+            df.locale = Locale(identifier: "en_US_POSIX")
             df.dateFormat = "yyyy-MM-dd"
             if let date = df.date(from: str) { return date }
 
