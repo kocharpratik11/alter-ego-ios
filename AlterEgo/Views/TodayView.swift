@@ -1,0 +1,229 @@
+import SwiftUI
+
+struct TodayView: View {
+    @StateObject private var groceryVM = GroceryViewModel()
+    @StateObject private var babyVM   = BabyViewModel()
+    @StateObject private var todosVM  = TodosViewModel()
+    @StateObject private var mealsVM  = MealsViewModel()
+
+    private var todayStr: String {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        return df.string(from: Date())
+    }
+
+    private var greeting: String {
+        let hour = Calendar.current.component(.hour, from: Date())
+        switch hour {
+        case 0..<12: return "Good morning"
+        case 12..<17: return "Good afternoon"
+        default: return "Good evening"
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+
+                    // Greeting
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(greeting), \(Config.currentUserName)")
+                            .font(.title2.bold())
+                        Text(Date().formatted(date: .long, time: .omitted))
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+
+                    // Quick stats
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                        StatCard(
+                            icon: "cart.fill",
+                            label: "Need to buy",
+                            value: "\(groceryVM.items.filter { $0.status == "needed" }.count) items",
+                            color: .blue
+                        )
+                        StatCard(
+                            icon: "moon.fill",
+                            label: "Last sleep",
+                            value: babyVM.lastSleepSummary,
+                            color: .indigo
+                        )
+                        StatCard(
+                            icon: "drop.fill",
+                            label: "Today's feeds",
+                            value: "\(babyVM.todayFeedCount) feeds",
+                            color: .teal
+                        )
+                        StatCard(
+                            icon: "checklist",
+                            label: "Open todos",
+                            value: "\(todosVM.openTodos.count) tasks",
+                            color: .orange
+                        )
+                    }
+                    .padding(.horizontal)
+
+                    // Today's Meals
+                    SectionCard(title: "Today's Meals") {
+                        let mealTypes: [(String, String)] = [
+                            ("breakfast", "Breakfast"),
+                            ("lunch", "Lunch"),
+                            ("dinner", "Dinner")
+                        ]
+                        ForEach(mealTypes, id: \.0) { (type, label) in
+                            HStack {
+                                Text(label)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text(mealsVM.title(for: Date(), mealType: type) ?? "—")
+                                    .font(.subheadline.bold())
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    }
+
+                    // Today's Todos
+                    if !todosVM.openTodos.isEmpty {
+                        SectionCard(title: "Today's Tasks") {
+                            ForEach(todosVM.openTodos.prefix(5)) { todo in
+                                HStack(alignment: .top, spacing: 10) {
+                                    Button {
+                                        Task { await todosVM.markDone(todo) }
+                                    } label: {
+                                        Image(systemName: "circle")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(todo.title)
+                                            .font(.subheadline)
+                                        Text(todo.assigneeName)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    Spacer()
+                                    PriorityBadge(priority: todo.priority)
+                                }
+                                .padding(.vertical, 4)
+                            }
+                        }
+                    }
+
+                    // Baby today
+                    let todayBabyLogs = babyVM.logs.filter {
+                        guard let d = $0.startedAt else { return false }
+                        return Calendar.current.isDateInToday(d)
+                    }
+                    if !todayBabyLogs.isEmpty {
+                        SectionCard(title: "Aurik today") {
+                            ForEach(todayBabyLogs.prefix(5)) { log in
+                                HStack {
+                                    Image(systemName: log.logTypeIcon)
+                                        .foregroundStyle(.secondary)
+                                        .frame(width: 20)
+                                    Text(log.value ?? log.amount ?? log.logType.capitalized)
+                                        .font(.subheadline)
+                                    Spacer()
+                                    Text(log.displayTime)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .padding(.vertical, 3)
+                            }
+                        }
+                    }
+                }
+                .padding(.bottom, 20)
+            }
+            .navigationTitle("Today")
+            .navigationBarTitleDisplayMode(.inline)
+            .refreshable {
+                await loadAll()
+            }
+            .task {
+                await loadAll()
+            }
+        }
+    }
+
+    private func loadAll() async {
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await self.groceryVM.load() }
+            group.addTask { await self.babyVM.load(days: 1) }
+            group.addTask { await self.todosVM.load() }
+            group.addTask { await self.mealsVM.load() }
+        }
+    }
+}
+
+// MARK: - Reusable components
+
+struct StatCard: View {
+    let icon: String
+    let label: String
+    let value: String
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Image(systemName: icon)
+                .foregroundStyle(color)
+                .font(.title3)
+            Text(value)
+                .font(.headline)
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(.background)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+    }
+}
+
+struct SectionCard<Content: View>: View {
+    let title: String
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.headline)
+            content()
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.background)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+        .padding(.horizontal)
+    }
+}
+
+struct PriorityBadge: View {
+    let priority: String
+
+    var color: Color {
+        switch priority {
+        case "high":   return .red
+        case "medium": return .orange
+        case "low":    return .green
+        default:       return .gray
+        }
+    }
+
+    var body: some View {
+        Text(priority.capitalized)
+            .font(.caption2.bold())
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(color.opacity(0.15))
+            .foregroundStyle(color)
+            .clipShape(Capsule())
+    }
+}

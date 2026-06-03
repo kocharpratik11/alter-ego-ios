@@ -1,0 +1,414 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0132EB0E13282B5FF42D067B /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD374E7724CE91795D1A1AD2 /* TodayView.swift */; };
+		1D4E1ED639FC22E899130B23 /* MealsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F8B2A2F8FE76A9E5FDBE13 /* MealsViewModel.swift */; };
+		231FABEEE74B270E43543502 /* ClaudeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31B98C0EFCDF61F2A5942F8 /* ClaudeService.swift */; };
+		39DDA6A76814C180960050F2 /* BabyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD31254820A36BF83D033C2D /* BabyViewModel.swift */; };
+		45BC0CA570A905B8AA89B435 /* MealModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21214BB3FC809D516D5311A /* MealModels.swift */; };
+		4C823F41933BE9EB62380DA2 /* MealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5278645E3AC33B2EB863679D /* MealsView.swift */; };
+		53EA034C7F7080911160E152 /* GroceryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CA79C5000CF0C8FB1CA8C /* GroceryViewModel.swift */; };
+		5C5CB1F7BA76B9C62A3EEF7B /* GroceryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB67A28844883C541A203B44 /* GroceryItem.swift */; };
+		825834416B98EA979888D20A /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C232398FAF0DCFEB12828E /* AppUser.swift */; };
+		84064A4AD106304005AA88CE /* AlterEgoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5FBBF332AE8DB38EF0864 /* AlterEgoApp.swift */; };
+		97438AEF92087635D2BC5E3B /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57107EFCCEB143190A1B1D26 /* Todo.swift */; };
+		9D09474D4970518BF44C3B2A /* TodosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C901E14DA47C5441203033 /* TodosView.swift */; };
+		A1D999F42264FF6C2066B339 /* SupabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBED3ACC62810093EC29D143 /* SupabaseService.swift */; };
+		CC7388D9C9AF92ECEDF40844 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEFF19EF7282AD149E9E6D2 /* Config.swift */; };
+		CEC29021D13DFA76A5B17C25 /* BabyLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93D8E525B5733E4320A8AD8 /* BabyLog.swift */; };
+		D1371669A3D1B13CDD336182 /* TodosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F15DC7644837AF8EB25A19 /* TodosViewModel.swift */; };
+		D2465DAB3BF7A8DF7A405111 /* GroceryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BFBA1CB2BC39309F7A82E /* GroceryView.swift */; };
+		D818DECECF3BDCD19E8A54A2 /* VoiceCommandIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380242CE2089A18A1A04E2AF /* VoiceCommandIntent.swift */; };
+		ED45ECDE53D6AD3D5E74448A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71C74EA65BDF332633EB4F1 /* ContentView.swift */; };
+		FBF3B755A734DA154166457C /* BabyTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24400AFCFBE5AE5D73A801DF /* BabyTrackerView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		173BFBA1CB2BC39309F7A82E /* GroceryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryView.swift; sourceTree = "<group>"; };
+		1EF79A87AD7375ECBC65F364 /* AlterEgo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEgo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		24400AFCFBE5AE5D73A801DF /* BabyTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyTrackerView.swift; sourceTree = "<group>"; };
+		380242CE2089A18A1A04E2AF /* VoiceCommandIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCommandIntent.swift; sourceTree = "<group>"; };
+		3C6CA79C5000CF0C8FB1CA8C /* GroceryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryViewModel.swift; sourceTree = "<group>"; };
+		5278645E3AC33B2EB863679D /* MealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsView.swift; sourceTree = "<group>"; };
+		57107EFCCEB143190A1B1D26 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		A21214BB3FC809D516D5311A /* MealModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealModels.swift; sourceTree = "<group>"; };
+		A8C901E14DA47C5441203033 /* TodosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosView.swift; sourceTree = "<group>"; };
+		AD374E7724CE91795D1A1AD2 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		ADE5FBBF332AE8DB38EF0864 /* AlterEgoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterEgoApp.swift; sourceTree = "<group>"; };
+		B1F8B2A2F8FE76A9E5FDBE13 /* MealsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsViewModel.swift; sourceTree = "<group>"; };
+		BD31254820A36BF83D033C2D /* BabyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyViewModel.swift; sourceTree = "<group>"; };
+		C25175D7F29B7047EB53C8EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C71C74EA65BDF332633EB4F1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C93D8E525B5733E4320A8AD8 /* BabyLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyLog.swift; sourceTree = "<group>"; };
+		CBED3ACC62810093EC29D143 /* SupabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseService.swift; sourceTree = "<group>"; };
+		D7C232398FAF0DCFEB12828E /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
+		F31B98C0EFCDF61F2A5942F8 /* ClaudeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeService.swift; sourceTree = "<group>"; };
+		F9F15DC7644837AF8EB25A19 /* TodosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosViewModel.swift; sourceTree = "<group>"; };
+		FB67A28844883C541A203B44 /* GroceryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryItem.swift; sourceTree = "<group>"; };
+		FDEFF19EF7282AD149E9E6D2 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		3884510ABB6D53F2548E83B4 /* AlterEgo */ = {
+			isa = PBXGroup;
+			children = (
+				ADE5FBBF332AE8DB38EF0864 /* AlterEgoApp.swift */,
+				C25175D7F29B7047EB53C8EF /* Info.plist */,
+				8FE0DCB336E4DB0B7A4D153C /* Config */,
+				CB2F301D508249403A6622AF /* Intents */,
+				7C5C0697A30E21BFEF67B7D8 /* Models */,
+				F01FD55BD0BFEF9EB1A06B72 /* Services */,
+				F629FC852FCFFE8770804819 /* ViewModels */,
+				A5FDA8D1898029C4240D718C /* Views */,
+			);
+			path = AlterEgo;
+			sourceTree = "<group>";
+		};
+		7C5C0697A30E21BFEF67B7D8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D7C232398FAF0DCFEB12828E /* AppUser.swift */,
+				C93D8E525B5733E4320A8AD8 /* BabyLog.swift */,
+				FB67A28844883C541A203B44 /* GroceryItem.swift */,
+				A21214BB3FC809D516D5311A /* MealModels.swift */,
+				57107EFCCEB143190A1B1D26 /* Todo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8417483F7F5B83F02B1D201C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1EF79A87AD7375ECBC65F364 /* AlterEgo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8FE0DCB336E4DB0B7A4D153C /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				FDEFF19EF7282AD149E9E6D2 /* Config.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		A5FDA8D1898029C4240D718C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				24400AFCFBE5AE5D73A801DF /* BabyTrackerView.swift */,
+				C71C74EA65BDF332633EB4F1 /* ContentView.swift */,
+				173BFBA1CB2BC39309F7A82E /* GroceryView.swift */,
+				5278645E3AC33B2EB863679D /* MealsView.swift */,
+				AD374E7724CE91795D1A1AD2 /* TodayView.swift */,
+				A8C901E14DA47C5441203033 /* TodosView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CB2F301D508249403A6622AF /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				380242CE2089A18A1A04E2AF /* VoiceCommandIntent.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		CF5C193B0AC4F2EAFDD1D2B3 = {
+			isa = PBXGroup;
+			children = (
+				3884510ABB6D53F2548E83B4 /* AlterEgo */,
+				8417483F7F5B83F02B1D201C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F01FD55BD0BFEF9EB1A06B72 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F31B98C0EFCDF61F2A5942F8 /* ClaudeService.swift */,
+				CBED3ACC62810093EC29D143 /* SupabaseService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		F629FC852FCFFE8770804819 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BD31254820A36BF83D033C2D /* BabyViewModel.swift */,
+				3C6CA79C5000CF0C8FB1CA8C /* GroceryViewModel.swift */,
+				B1F8B2A2F8FE76A9E5FDBE13 /* MealsViewModel.swift */,
+				F9F15DC7644837AF8EB25A19 /* TodosViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		90748F49D9F1640BFC6069B6 /* AlterEgo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2055EE346D1F38290009AFF /* Build configuration list for PBXNativeTarget "AlterEgo" */;
+			buildPhases = (
+				8B2B34CA92091E5876D76C47 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AlterEgo;
+			packageProductDependencies = (
+			);
+			productName = AlterEgo;
+			productReference = 1EF79A87AD7375ECBC65F364 /* AlterEgo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BB3AD85BE4F7570BD990C0D7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 6A83573B9125406EBADFF18A /* Build configuration list for PBXProject "AlterEgo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF5C193B0AC4F2EAFDD1D2B3;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8417483F7F5B83F02B1D201C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				90748F49D9F1640BFC6069B6 /* AlterEgo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8B2B34CA92091E5876D76C47 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84064A4AD106304005AA88CE /* AlterEgoApp.swift in Sources */,
+				825834416B98EA979888D20A /* AppUser.swift in Sources */,
+				CEC29021D13DFA76A5B17C25 /* BabyLog.swift in Sources */,
+				FBF3B755A734DA154166457C /* BabyTrackerView.swift in Sources */,
+				39DDA6A76814C180960050F2 /* BabyViewModel.swift in Sources */,
+				231FABEEE74B270E43543502 /* ClaudeService.swift in Sources */,
+				CC7388D9C9AF92ECEDF40844 /* Config.swift in Sources */,
+				ED45ECDE53D6AD3D5E74448A /* ContentView.swift in Sources */,
+				5C5CB1F7BA76B9C62A3EEF7B /* GroceryItem.swift in Sources */,
+				D2465DAB3BF7A8DF7A405111 /* GroceryView.swift in Sources */,
+				53EA034C7F7080911160E152 /* GroceryViewModel.swift in Sources */,
+				45BC0CA570A905B8AA89B435 /* MealModels.swift in Sources */,
+				4C823F41933BE9EB62380DA2 /* MealsView.swift in Sources */,
+				1D4E1ED639FC22E899130B23 /* MealsViewModel.swift in Sources */,
+				A1D999F42264FF6C2066B339 /* SupabaseService.swift in Sources */,
+				0132EB0E13282B5FF42D067B /* TodayView.swift in Sources */,
+				97438AEF92087635D2BC5E3B /* Todo.swift in Sources */,
+				9D09474D4970518BF44C3B2A /* TodosView.swift in Sources */,
+				D1371669A3D1B13CDD336182 /* TodosViewModel.swift in Sources */,
+				D818DECECF3BDCD19E8A54A2 /* VoiceCommandIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		133A9AA96892F9A8BFDEE85A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8RM452GBM8;
+				INFOPLIST_FILE = AlterEgo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ourhome.alterego;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		93BA099682EEB283538B7028 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8RM452GBM8;
+				INFOPLIST_FILE = AlterEgo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ourhome.alterego;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D6D3751B3B32D3FC517ACBB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		DA63E7DA3023DBEA4CFAFCE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6A83573B9125406EBADFF18A /* Build configuration list for PBXProject "AlterEgo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA63E7DA3023DBEA4CFAFCE6 /* Debug */,
+				D6D3751B3B32D3FC517ACBB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D2055EE346D1F38290009AFF /* Build configuration list for PBXNativeTarget "AlterEgo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93BA099682EEB283538B7028 /* Debug */,
+				133A9AA96892F9A8BFDEE85A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BB3AD85BE4F7570BD990C0D7 /* Project object */;
+}

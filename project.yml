@@ -1,0 +1,43 @@
+name: AlterEgo
+options:
+  bundleIdPrefix: com.ourhome
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15"
+
+targets:
+  AlterEgo:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+
+    sources:
+      - path: AlterEgo
+        excludes:
+          - "**/*.md"
+
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ourhome.alterego
+        SWIFT_VERSION: "5.9"
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        DEVELOPMENT_TEAM: ""        # ← Set your Apple Team ID here
+        INFOPLIST_FILE: AlterEgo/Info.plist
+
+    info:
+      path: AlterEgo/Info.plist
+      properties:
+        CFBundleName: Alter Ego
+        CFBundleDisplayName: Alter Ego
+        NSMicrophoneUsageDescription: "Alter Ego uses the microphone to process Siri voice commands."
+        NSSpeechRecognitionUsageDescription: "Alter Ego uses speech recognition to process your voice commands."
+        UILaunchScreen: {}
+        UIBackgroundModes:
+          - audio
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+          NSExceptionDomains:
+            supabase.co:
+              NSExceptionAllowsInsecureHTTPLoads: false
+              NSIncludesSubdomains: true
