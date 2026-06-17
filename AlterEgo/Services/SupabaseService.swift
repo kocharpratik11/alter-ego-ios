@@ -289,6 +289,14 @@ final class SupabaseService {
                                  returning: [MealIdea].self)
     }
 
+    func addMealIdea(title: String) async throws -> MealIdea {
+        let payload: [String: Any] = ["title": title]
+        let data = try JSONSerialization.data(withJSONObject: payload)
+        let ideas = try await request(table: "meal_ideas", method: "POST", body: data, returning: [MealIdea].self)
+        guard let idea = ideas.first else { throw NSError(domain: "Supabase", code: 0) }
+        return idea
+    }
+
     // MARK: - Input Log
 
     func logInput(rawText: String, intent: String, actionJSON: [String: Any], confirmation: String, latencyMs: Int) async throws {

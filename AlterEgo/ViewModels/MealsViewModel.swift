@@ -86,6 +86,16 @@ final class MealsViewModel: ObservableObject {
         }
     }
 
+    func addIdea(title: String) async {
+        do {
+            let idea = try await db.addMealIdea(title: title)
+            ideas.append(idea)
+            ideas.sort { $0.title < $1.title }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     func previousWeek() {
         weekStart = Calendar.current.date(byAdding: .day, value: -7, to: weekStart)!
     }

@@ -42,52 +42,58 @@ final class ClaudeService {
     private let model    = "claude-haiku-4-5"
 
     private let systemPrompt = """
-    You are a home assistant router for a family app called Alter Ego.
-    You receive voice commands from family members and must classify and extract structured actions.
+        You are a home assistant router for a family app called Alter Ego.
+        You receive voice commands from family members and must classify and extract structured actions.
 
-    Family members:
-    - Mom (ID: 00000000-0000-0000-0000-000000000001)
-    - Dad (ID: 00000000-0000-0000-0000-000000000002)
-    - Nanny (ID: 00000000-0000-0000-0000-000000000003)
-    - Baby Aurik (ID: 00000000-0000-0000-0000-000000000010)
+        Family members:
+        - Mom (ID: 00000000-0000-0000-0000-000000000001)
+        - Dad (ID: 00000000-0000-0000-0000-000000000002)
+        - Nanny (ID: 00000000-0000-0000-0000-000000000003)
+        - Baby Aurik (ID: 00000000-0000-0000-0000-000000000010)
 
-    Available stores: Costco, Weee, Felipe, Apni Mandi, Namaste Plaza, Other
+        Available stores: Costco, Weee, Felipe, Apni Mandi, Namaste Plaza, Other
 
-    Respond ONLY with valid JSON in this exact format:
-    {
-      "intent": "INTENT_NAME",
-      "action": { ... intent-specific fields ... },
-      "confirmation": "Short verbal confirmation to read aloud"
-    }
+        Respond ONLY with valid JSON in this exact format:
+        {
+          "intent": "INTENT_NAME",
+          "action": { ... intent-specific fields ... },
+          "confirmation": "Short verbal confirmation to read aloud"
+        }
 
-    Intent types and their action schemas:
+        Intent types and their action schemas:
 
-    GROCERY: Add items to shopping list
-    action: { "name": string, "store": string|null, "quantity": string|null }
+        GROCERY: Add items to shopping list
+        action: { "name": string, "store": string|null, "quantity": string|null }
 
-    BABY_LOG: Log baby care event
-    action: { "log_type": "feed"|"sleep"|"solid"|"diaper"|"other", "duration_minutes": int|null, "amount": string|null, "value": string|null, "notes": string|null }
+        BABY_LOG: Log baby care event
+        action: { "log_type": "feed"|"sleep"|"solid"|"diaper"|"other", "duration_minutes": int|null, "amount": string|null, "value": string|null, "notes": string|null }
 
-    TODO: Create a task for the current user
-    action: { "title": string, "priority": "low"|"medium"|"high" }
+        TODO: Create a task for the current user
+        action: { "title": string, "priority": "low"|"medium"|"high" }
 
-    DELEGATED_TODO: Create a task assigned to someone else
-    action: { "title": string, "assigned_to_name": "Mom"|"Dad"|"Nanny", "priority": "low"|"medium"|"high" }
+        DELEGATED_TODO: Create a task assigned to someone else
+        action: { "title": string, "assigned_to_name": "Mom"|"Dad"|"Nanny", "priority": "low"|"medium"|"high" }
 
-    MEAL_IDEA: Add a meal idea or plan a meal slot
-    action: { "title": string, "date": "YYYY-MM-DD"|null, "meal_type": "breakfast"|"lunch"|"dinner"|null }
+        MEAL_IDEA: Schedule a meal or save a meal idea
+        action: { "title": string, "date": "today"|"tomorrow"|"monday"|"tuesday"|"wednesday"|"thursday"|"friday"|"saturday"|"sunday"|null, "meal_type": "mom_breakfast"|"mom_lunch"|"mom_dinner"|"dad_breakfast"|"dad_lunch"|"dad_dinner"|"baby_breakfast"|"baby_lunch"|"baby_dinner"|null }
+        Rules:
+        - Map person+meal_time to meal_type: "Mom breakfast"→"mom_breakfast", "Dad dinner"→"dad_dinner", "Aurik lunch"/"baby lunch"→"baby_lunch", etc.
+        - For date: use "today" for "today/tonight/this morning/this evening", "tomorrow" for tomorrow, or the lowercase day name ("monday", "tuesday"…) for named days. NEVER output a YYYY-MM-DD date string.
+        - If meal_type is specified but no date is mentioned, set date to "today".
+        - Set BOTH date AND meal_type to null ONLY when neither a person+meal_time NOR a date is mentioned — the title saves as a general meal idea.
 
-    QUESTION: Answer a question about the household data
-    action: { "about": "grocery"|"baby"|"todos", "query": string }
+        QUESTION: Answer a question about the household data
+        action: { "about": "grocery"|"baby"|"todos", "query": string }
 
-    FREEFORM_NOTE: Anything that doesn't fit above
-    action: { "text": string }
+        FREEFORM_NOTE: Anything that doesn't fit above
+        action: { "text": string }
 
-    Be concise in confirmations. Examples:
-    - "Added oat milk to Costco list"
-    - "Logged Aurik's 45-minute nap"
-    - "Todo added: Call dentist"
-    """
+        Be concise in confirmations. Examples:
+        - "Added oat milk to Costco list"
+        - "Logged Aurik's 45-minute nap"
+        - "Scheduled pasta for Mom's dinner on Monday"
+        - "Added chicken curry to the meal ideas bank"
+        """
 
     func route(text: String) async throws -> RouteResult {
         let start = Date()
@@ -225,23 +231,51 @@ final class VoiceCommandProcessor {
             )
 
         case .mealIdea:
-            if let title = a["title"] as? String,
-               let dateStr = a["date"] as? String,
-               let mealType = a["meal_type"] as? String {
-                let df = DateFormatter()
-                df.dateFormat = "yyyy-MM-dd"
-                if let date = df.date(from: dateStr) {
-                    try await SupabaseService.shared.upsertMealSlot(
-                        date: date,
-                        mealType: mealType,
-                        title: title
-                    )
-                }
+            let title    = a["title"]     as? String ?? ""
+            let dateStr  = a["date"]      as? String
+            let mealType = a["meal_type"] as? String
+            guard !title.isEmpty else { break }
+
+            if let mealType, !mealType.isEmpty {
+                let date = resolveRelativeDate(dateStr)
+                try await SupabaseService.shared.upsertMealSlot(
+                    date: date,
+                    mealType: mealType,
+                    title: title
+                )
+            } else {
+                _ = try await SupabaseService.shared.addMealIdea(title: title)
             }
 
         case .freeformNote, .question, .unknown:
             // Nothing to write for these intents
             break
+        }
+    }
+
+    /// Converts a relative date token from Claude ("today", "tomorrow", "monday", …)
+    /// to a real Date using Swift's calendar, so the year is always correct.
+    private func resolveRelativeDate(_ token: String?) -> Date {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        guard let raw = token?.lowercased().trimmingCharacters(in: .whitespaces),
+              !raw.isEmpty else { return today }
+
+        switch raw {
+        case "today", "tonight": return today
+        case "tomorrow": return cal.date(byAdding: .day, value: 1, to: today)!
+        default:
+            let weekdayMap: [String: Int] = [
+                "sunday": 1, "monday": 2, "tuesday": 3,
+                "wednesday": 4, "thursday": 5, "friday": 6, "saturday": 7
+            ]
+            if let target = weekdayMap[raw] {
+                let current = cal.component(.weekday, from: today)
+                var diff = target - current
+                if diff <= 0 { diff += 7 }   // always the upcoming occurrence
+                return cal.date(byAdding: .day, value: diff, to: today)!
+            }
+            return today   // unknown token → default to today
         }
     }
 

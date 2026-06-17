@@ -26,11 +26,19 @@ struct MealsView: View {
                         ProgressView()
                     } else {
                         MealGridSection(
-                            title: "Family Meals",
-                            mealTypes: MealType.familyTypes,
+                            title: "Mom's Meals",
+                            mealTypes: MealType.momTypes,
                             dates: vm.weekDates,
                             vm: vm,
-                            accentColor: .accentColor
+                            accentColor: .pink
+                        )
+
+                        MealGridSection(
+                            title: "Dad's Meals",
+                            mealTypes: MealType.dadTypes,
+                            dates: vm.weekDates,
+                            vm: vm,
+                            accentColor: .blue
                         )
 
                         MealGridSection(
@@ -42,36 +50,7 @@ struct MealsView: View {
                         )
 
                         // Meal ideas — draggable chips
-                        if !vm.ideas.isEmpty {
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text("Meal Ideas")
-                                    .font(.headline)
-                                Text("Drag an idea onto a meal slot, or tap a slot to type")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                LazyVGrid(
-                                    columns: [GridItem(.adaptive(minimum: 80, maximum: 160))],
-                                    alignment: .leading,
-                                    spacing: 8
-                                ) {
-                                    ForEach(vm.ideas) { idea in
-                                        Text(idea.title)
-                                            .font(.caption)
-                                            .padding(.horizontal, 10)
-                                            .padding(.vertical, 6)
-                                            .background(Color(.systemGray6))
-                                            .clipShape(Capsule())
-                                            .draggable(idea.title)      // ← native iOS drag
-                                    }
-                                }
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(.background)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
-                            .padding(.horizontal)
-                        }
+                        MealIdeasSection(vm: vm)
                     }
                 }
                 .padding(.vertical)
@@ -84,6 +63,73 @@ struct MealsView: View {
             } message: {
                 Text(vm.errorMessage ?? "")
             }
+        }
+    }
+}
+
+// MARK: - Meal ideas section
+
+struct MealIdeasSection: View {
+    @ObservedObject var vm: MealsViewModel
+    @State private var showAdd  = false
+    @State private var newIdea  = ""
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Meal Ideas")
+                    .font(.headline)
+                Spacer()
+                Button {
+                    newIdea = ""
+                    showAdd = true
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title3)
+                        .foregroundStyle(.tint)
+                }
+            }
+
+            if vm.ideas.isEmpty {
+                Text("No ideas yet — tap + to add one")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("Drag an idea onto a meal slot, or tap a slot to edit")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 80, maximum: 160))],
+                    alignment: .leading,
+                    spacing: 8
+                ) {
+                    ForEach(vm.ideas) { idea in
+                        Text(idea.title)
+                            .font(.caption)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(Color(.systemGray6))
+                            .clipShape(Capsule())
+                            .draggable(idea.title)
+                    }
+                }
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.background)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+        .padding(.horizontal)
+        .alert("New Meal Idea", isPresented: $showAdd) {
+            TextField("e.g. Chicken Biryani", text: $newIdea)
+            Button("Add") {
+                let title = newIdea.trimmingCharacters(in: .whitespaces)
+                guard !title.isEmpty else { return }
+                Task { await vm.addIdea(title: title) }
+            }
+            Button("Cancel", role: .cancel) { }
         }
     }
 }

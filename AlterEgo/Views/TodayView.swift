@@ -74,25 +74,41 @@ struct TodayView: View {
                     }
                     .padding(.horizontal)
 
-                    // Today's Meals
-                    SectionCard(title: "Today's Meals") {
-                        let mealTypes: [(String, String)] = [
-                            ("breakfast", "Breakfast"),
-                            ("lunch", "Lunch"),
-                            ("dinner", "Dinner")
-                        ]
-                        ForEach(mealTypes, id: \.0) { (type, label) in
+                    // Today's Meals — Mom
+                    SectionCard(title: "Mom's Meals Today") {
+                        ForEach(MealType.momTypes, id: \.rawValue) { mealType in
                             HStack {
-                                Text(label)
+                                Text(mealType.label)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                Text(mealsVM.title(for: Date(), mealType: type) ?? "—")
+                                let title = mealsVM.title(for: Date(), mealType: mealType.rawValue)
+                                Text(title?.isEmpty == false ? title! : "—")
                                     .font(.subheadline.bold())
+                                    .foregroundStyle(title?.isEmpty == false ? .primary : .secondary)
                             }
                             .padding(.vertical, 4)
                         }
                     }
+                    .onTapGesture { selectedTab = 3 }
+
+                    // Today's Meals — Dad
+                    SectionCard(title: "Dad's Meals Today") {
+                        ForEach(MealType.dadTypes, id: \.rawValue) { mealType in
+                            HStack {
+                                Text(mealType.label)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                let title = mealsVM.title(for: Date(), mealType: mealType.rawValue)
+                                Text(title?.isEmpty == false ? title! : "—")
+                                    .font(.subheadline.bold())
+                                    .foregroundStyle(title?.isEmpty == false ? .primary : .secondary)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    }
+                    .onTapGesture { selectedTab = 3 }
 
                     // Today's Todos
                     if !todosVM.openTodos.isEmpty {
