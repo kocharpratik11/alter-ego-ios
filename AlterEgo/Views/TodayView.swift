@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct TodayView: View {
+    @Binding var selectedTab: Int
     @StateObject private var groceryVM = GroceryViewModel()
     @StateObject private var babyVM   = BabyViewModel()
     @StateObject private var todosVM  = TodosViewModel()
@@ -37,7 +38,7 @@ struct TodayView: View {
                     .padding(.horizontal)
                     .padding(.top, 8)
 
-                    // Quick stats
+                    // Quick stats — tap to jump to the relevant tab
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                         StatCard(
                             icon: "cart.fill",
@@ -45,24 +46,31 @@ struct TodayView: View {
                             value: "\(groceryVM.items.filter { $0.status == "needed" }.count) items",
                             color: .blue
                         )
+                        .onTapGesture { selectedTab = 1 }
+
                         StatCard(
                             icon: "moon.fill",
                             label: "Last sleep",
                             value: babyVM.lastSleepSummary,
                             color: .indigo
                         )
+                        .onTapGesture { selectedTab = 2 }
+
                         StatCard(
                             icon: "drop.fill",
                             label: "Today's feeds",
                             value: "\(babyVM.todayFeedCount) feeds",
                             color: .teal
                         )
+                        .onTapGesture { selectedTab = 2 }
+
                         StatCard(
                             icon: "checklist",
                             label: "Open todos",
                             value: "\(todosVM.openTodos.count) tasks",
                             color: .orange
                         )
+                        .onTapGesture { selectedTab = 4 }
                     }
                     .padding(.horizontal)
 
@@ -91,12 +99,8 @@ struct TodayView: View {
                         SectionCard(title: "Today's Tasks") {
                             ForEach(todosVM.openTodos.prefix(5)) { todo in
                                 HStack(alignment: .top, spacing: 10) {
-                                    Button {
-                                        Task { await todosVM.markDone(todo) }
-                                    } label: {
-                                        Image(systemName: "circle")
-                                            .foregroundStyle(.secondary)
-                                    }
+                                    Image(systemName: "circle")
+                                        .foregroundStyle(.secondary)
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(todo.title)
                                             .font(.subheadline)

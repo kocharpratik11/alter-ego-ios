@@ -156,67 +156,86 @@ struct DroppableMealCell: View {
     let mealType: MealType
     @ObservedObject var vm: MealsViewModel
 
-    @State private var isEditing = false
-    @State private var editText  = ""
+    @State private var showEdit   = false
+    @State private var editText   = ""
     @State private var isTargeted = false
+
+    private let df: DateFormatter = {
+        let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; return f
+    }()
 
     private var currentTitle: String? {
         vm.title(for: date, mealType: mealType.rawValue)
     }
 
+    private var dragPayload: String {
+        "SLOT:\(df.string(from: date)):\(mealType.rawValue):\(currentTitle ?? "")"
+    }
+
     var body: some View {
-        Group {
-            if isEditing {
-                TextField("Meal...", text: $editText)
-                    .font(.caption2)
-                    .padding(6)
-                    .frame(minHeight: 48)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .onSubmit { save() }
-                    .submitLabel(.done)
-            } else {
-                Button {
-                    editText  = currentTitle ?? ""
-                    isEditing = true
-                } label: {
-                    Text(currentTitle.map { $0.isEmpty ? "—" : $0 } ?? "—")
-                        .font(.caption2)
-                        .foregroundStyle(currentTitle?.isEmpty == false ? .primary : .secondary)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .padding(6)
-                        .frame(maxWidth: .infinity, minHeight: 48)
-                        .background(
-                            isTargeted
-                                ? Color.accentColor.opacity(0.2)
-                                : Calendar.current.isDateInToday(date)
-                                    ? Color.accentColor.opacity(0.1)
-                                    : Color(.systemGray6)
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(isTargeted ? Color.accentColor : Color.clear, lineWidth: 2)
-                        )
-                }
-                .buttonStyle(.plain)
-            }
+        Button {
+            editText = currentTitle ?? ""
+            showEdit = true
+        } label: {
+            Text(currentTitle.map { $0.isEmpty ? "—" : $0 } ?? "—")
+                .font(.caption2)
+                .foregroundStyle(currentTitle?.isEmpty == false ? .primary : .secondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .padding(6)
+                .frame(maxWidth: .infinity, minHeight: 48)
+                .background(
+                    isTargeted
+                        ? Color.accentColor.opacity(0.2)
+                        : Calendar.current.isDateInToday(date)
+                            ? Color.accentColor.opacity(0.1)
+                            : Color(.systemGray6)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(isTargeted ? Color.accentColor : Color.clear, lineWidth: 2)
+                )
         }
-        // ← native iOS drop target: accepts dragged String (meal idea title)
+        .buttonStyle(.plain)
+        .draggable(dragPayload)
         .dropDestination(for: String.self) { items, _ in
-            guard let title = items.first, !title.isEmpty else { return false }
-            Task { await vm.setMeal(date: date, mealType: mealType.rawValue, title: title) }
+            guard let payload = items.first, !payload.isEmpty else { return false }
+            Task { await handleDrop(payload: payload) }
             return true
-        } isTargeted: { targeted in
-            isTargeted = targeted
+        } isTargeted: { isTargeted = $0 }
+        .alert("Edit Meal", isPresented: $showEdit) {
+            TextField("Meal name", text: $editText)
+            Button("Save") {
+                let title = editText.trimmingCharacters(in: .whitespaces)
+                Task { await vm.setMeal(date: date, mealType: mealType.rawValue, title: title) }
+            }
+            Button("Clear", role: .destructive) {
+                Task { await vm.setMeal(date: date, mealType: mealType.rawValue, title: "") }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("\(mealType.label) · \(df.string(from: date))")
         }
     }
 
-    private func save() {
-        isEditing = false
-        let title = editText.trimmingCharacters(in: .whitespaces)
-        Task { await vm.setMeal(date: date, mealType: mealType.rawValue, title: title) }
+    private func handleDrop(payload: String) async {
+        if payload.hasPrefix("SLOT:") {
+            let parts = payload.dropFirst("SLOT:".count)
+                .split(separator: ":", maxSplits: 2, omittingEmptySubsequences: false)
+                .map(String.init)
+            guard parts.count == 3 else { return }
+            let srcDateStr  = parts[0]
+            let srcMealType = parts[1]
+            let srcTitle    = parts[2]
+            let destTitle   = currentTitle ?? ""
+            if let srcDate = df.date(from: srcDateStr) {
+                await vm.setMeal(date: date,    mealType: mealType.rawValue, title: srcTitle)
+                await vm.setMeal(date: srcDate, mealType: srcMealType,       title: destTitle)
+            }
+        } else {
+            await vm.setMeal(date: date, mealType: mealType.rawValue, title: payload)
+        }
     }
 }
 

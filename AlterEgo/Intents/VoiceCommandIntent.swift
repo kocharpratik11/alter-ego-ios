@@ -2,17 +2,18 @@ import AppIntents
 import Foundation
 
 // MARK: - Main Siri App Intent
-// Usage: "Hey Siri, tell Alter Ego [your command]"
-// Or set up a Shortcut in the Shortcuts app named "Alter Ego"
+// Runs entirely in the background — app never opens.
+// Siri speaks the confirmation aloud after processing.
+// Trigger: "Hey Siri, Log with Alter Ego" → Siri asks "What's the command?" → speak it
 
 struct VoiceCommandIntent: AppIntent {
-    static var title: LocalizedStringResource = "Tell Alter Ego"
+    static var title: LocalizedStringResource = "Log with Alter Ego"
     static var description = IntentDescription(
         "Send a voice command to Alter Ego — add groceries, log baby events, create todos, and more.",
         categoryName: "Family"
     )
 
-    // This allows the intent to run in the background without opening the app
+    // Stay in background — Siri speaks the result, app does NOT open
     static var openAppWhenRun: Bool = false
 
     @Parameter(
@@ -21,32 +22,57 @@ struct VoiceCommandIntent: AppIntent {
     )
     var command: String
 
-    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let result = await VoiceCommandProcessor.shared.process(command)
         return .result(dialog: IntentDialog(stringLiteral: result.confirmation))
     }
 }
 
+// MARK: - Open App Intent
+// Trigger: "Hey Siri, Open Alter Ego" — opens the app to the Today tab
+
+struct OpenAlterEgoIntent: AppIntent {
+    static var title: LocalizedStringResource = "Open Alter Ego"
+    static var description = IntentDescription("Open the Alter Ego family dashboard")
+    static var openAppWhenRun: Bool = true
+
+    func perform() async throws -> some IntentResult {
+        return .result()
+    }
+}
+
 // MARK: - App Shortcuts provider
-// This makes "Hey Siri, tell Alter Ego..." work without any setup by the user.
 
 struct AlterEgoShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
+        // Background command logging — app stays closed, Siri reads out the result
         AppShortcut(
             intent: VoiceCommandIntent(),
             phrases: [
-                "Tell \(.applicationName)",
-                "Open \(.applicationName)",
-                "\(.applicationName) command"
+                "Log with \(.applicationName)",
+                "Ask \(.applicationName)",
+                "Note for \(.applicationName)",
+                "\(.applicationName) log"
             ],
-            shortTitle: "Tell Alter Ego",
+            shortTitle: "Log with Alter Ego",
             systemImageName: "waveform.badge.mic"
+        )
+
+        // Open the app
+        AppShortcut(
+            intent: OpenAlterEgoIntent(),
+            phrases: [
+                "Open \(.applicationName)",
+                "Show \(.applicationName)"
+            ],
+            shortTitle: "Open Alter Ego",
+            systemImageName: "house.fill"
         )
     }
 }
 
-// MARK: - Quick action intents (for Spotlight / Shortcuts suggestions)
+// MARK: - Quick action intents (Spotlight / Shortcuts suggestions)
+// These also run in the background.
 
 struct LogBabyFeedIntent: AppIntent {
     static var title: LocalizedStringResource = "Log Baby Feed"
@@ -56,7 +82,6 @@ struct LogBabyFeedIntent: AppIntent {
     @Parameter(title: "Amount", description: "How much? e.g. 4oz, left breast")
     var amount: String
 
-    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let result = await VoiceCommandProcessor.shared.process("Aurik had a feed, \(amount)")
         return .result(dialog: IntentDialog(stringLiteral: result.confirmation))
@@ -71,7 +96,6 @@ struct LogBabyNapIntent: AppIntent {
     @Parameter(title: "Duration", description: "How long in minutes? e.g. 45")
     var durationMinutes: Int
 
-    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let result = await VoiceCommandProcessor.shared.process("Aurik slept \(durationMinutes) minutes")
         return .result(dialog: IntentDialog(stringLiteral: result.confirmation))
@@ -86,7 +110,6 @@ struct AddGroceryIntent: AppIntent {
     @Parameter(title: "Item", description: "What to add? e.g. oat milk from Costco")
     var item: String
 
-    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let result = await VoiceCommandProcessor.shared.process("Add \(item) to groceries")
         return .result(dialog: IntentDialog(stringLiteral: result.confirmation))

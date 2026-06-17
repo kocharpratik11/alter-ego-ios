@@ -40,21 +40,31 @@ final class MealsViewModel: ObservableObject {
     }
 
     func load() async {
+        let df2 = DateFormatter(); df2.dateFormat = "yyyy-MM-dd"
+        print("🍽 load() called — weekStart: \(df2.string(from: weekStart))")
         isLoading = true
         errorMessage = nil
         do {
             let meals = try await db.fetchMealPlan(weekStart: weekStart)
+            print("🍽 fetched \(meals.count) meals")
+            for m in meals { print("  \(m.dateString) \(m.mealType): \(m.title ?? "(empty)")") }
             var newPlan: [String: [String: String]] = [:]
-            let df = DateFormatter(); df.dateFormat = "yyyy-MM-dd"
             for meal in meals {
-                let key = df.string(from: meal.date)
-                if newPlan[key] == nil { newPlan[key] = [:] }
-                newPlan[key]?[meal.mealType] = meal.title ?? ""
+                if newPlan[meal.dateString] == nil { newPlan[meal.dateString] = [:] }
+                newPlan[meal.dateString]?[meal.mealType] = meal.title ?? ""
             }
             plan = newPlan
-            ideas = try await db.fetchMealIdeas()
         } catch {
+            print("🍽 meal plan error: \(error)")
             errorMessage = error.localizedDescription
+        }
+        // Fetch ideas independently so a missing table doesn't affect the meal grid
+        do {
+            ideas = try await db.fetchMealIdeas()
+            print("🍽 fetched \(ideas.count) ideas")
+        } catch {
+            print("🍽 ideas error (ignored): \(error)")
+            ideas = []
         }
         isLoading = false
     }
@@ -62,11 +72,15 @@ final class MealsViewModel: ObservableObject {
     func setMeal(date: Date, mealType: String, title: String) async {
         let df = DateFormatter(); df.dateFormat = "yyyy-MM-dd"
         let key = df.string(from: date)
+        print("🍽 setMeal: \(key) \(mealType) = '\(title)'")
         if plan[key] == nil { plan[key] = [:] }
         plan[key]?[mealType] = title
+        print("🍽 optimistic update applied")
         do {
             try await db.upsertMealSlot(date: date, mealType: mealType, title: title)
+            print("🍽 upsert succeeded")
         } catch {
+            print("🍽 upsert FAILED: \(error)")
             errorMessage = error.localizedDescription
             await load()
         }

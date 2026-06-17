@@ -242,19 +242,15 @@ final class SupabaseService {
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         let end = Calendar.current.date(byAdding: .day, value: 6, to: weekStart)!
+        let startStr = df.string(from: weekStart)
+        let endStr   = df.string(from: end)
         let q: [String: String] = [
-            "date": "gte.\(df.string(from: weekStart))",
+            "date": "gte.\(startStr)",
             "order": "date.asc"
         ]
-        // Fetch entire week range
         let all = try await request(table: "meal_plan", query: q, returning: [MealPlan].self)
-        let endStr = df.string(from: end)
-        return all.filter { plan in
-            if let d = plan.date as Date? {
-                return df.string(from: d) <= endStr
-            }
-            return false
-        }
+        // dateString is "yyyy-MM-dd" — string comparison works correctly for ISO dates
+        return all.filter { $0.dateString <= endStr }
     }
 
     func upsertMealSlot(date: Date, mealType: String, title: String) async throws {
@@ -268,7 +264,11 @@ final class SupabaseService {
         ]
         let data = try JSONSerialization.data(withJSONObject: payload)
 
-        var req = URLRequest(url: baseURL.appendingPathComponent("meal_plan"))
+        var components = URLComponents(url: baseURL.appendingPathComponent("meal_plan"),
+                                       resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "on_conflict", value: "date,meal_type")]
+
+        var req = URLRequest(url: components.url!)
         req.httpMethod = "POST"
         req.setValue("Bearer \(anonKey)", forHTTPHeaderField: "Authorization")
         req.setValue(anonKey, forHTTPHeaderField: "apikey")

@@ -2,17 +2,18 @@ import Foundation
 
 struct MealPlan: Codable, Identifiable {
     let id: UUID
-    var date: Date
+    var dateString: String       // "2024-06-02" — stored as plain string, no Date parsing needed
     var mealType: String         // breakfast | lunch | dinner | baby_breakfast | baby_lunch | baby_dinner
     var title: String?
     let createdBy: UUID?
     let createdAt: Date?
 
     enum CodingKeys: String, CodingKey {
-        case id, date, title
-        case mealType  = "meal_type"
-        case createdBy = "created_by"
-        case createdAt = "created_at"
+        case id, title
+        case dateString = "date"   // "date" in JSON → dateString property
+        case mealType              // convertFromSnakeCase handles "meal_type" → "mealType"
+        case createdBy             // convertFromSnakeCase handles "created_by" → "createdBy"
+        case createdAt             // convertFromSnakeCase handles "created_at" → "createdAt"
     }
 }
 

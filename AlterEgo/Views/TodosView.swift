@@ -18,12 +18,18 @@ struct TodosView: View {
                     )
                 } else {
                     List {
-                        ForEach(vm.groupedByAssignee, id: \.id) { group in
+                        ForEach(vm.groupedByAssignee, id: \.name) { group in
                             Section(header: Text(group.name).font(.subheadline.bold())) {
                                 ForEach(group.todos) { todo in
-                                    TodoRow(todo: todo) {
-                                        Task { await vm.markDone(todo) }
-                                    }
+                                    TodoRow(todo: todo)
+                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                            Button {
+                                                Task { await vm.markDone(todo) }
+                                            } label: {
+                                                Label("Done", systemImage: "checkmark.circle.fill")
+                                            }
+                                            .tint(.green)
+                                        }
                                 }
                             }
                         }
@@ -55,16 +61,12 @@ struct TodosView: View {
 
 struct TodoRow: View {
     let todo: Todo
-    let onComplete: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Button(action: onComplete) {
-                Image(systemName: todo.status == "done" ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(todo.status == "done" ? .green : .secondary)
-                    .font(.title3)
-            }
-            .buttonStyle(.plain)
+            Image(systemName: todo.status == "done" ? "checkmark.circle.fill" : "circle")
+                .foregroundStyle(todo.status == "done" ? .green : .secondary)
+                .font(.title3)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(todo.title)

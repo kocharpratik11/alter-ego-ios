@@ -13,21 +13,28 @@ final class TodosViewModel: ObservableObject {
         todos.filter { $0.status != "done" }
     }
 
-    var groupedByAssignee: [(name: String, id: UUID, todos: [Todo])] {
+    var groupedByAssignee: [(name: String, todos: [Todo])] {
         let assignees: [(name: String, id: UUID)] = [
-            ("Mom", Config.momID),
-            ("Dad", Config.dadID),
+            ("Mom",   Config.momID),
+            ("Dad",   Config.dadID),
             ("Nanny", Config.nannyID)
         ]
-        return assignees.compactMap { assignee in
-            let assigned = openTodos.filter { $0.assignedTo == assignee.id }
-            let unassigned = assignee.id == Config.currentUserID
-                ? openTodos.filter { $0.assignedTo == nil && $0.createdBy == Config.currentUserID }
-                : []
-            let all = assigned + unassigned
-            guard !all.isEmpty else { return nil }
-            return (name: assignee.name, id: assignee.id, todos: all)
+        var result: [(name: String, todos: [Todo])] = []
+
+        // Show todos per assignee
+        for assignee in assignees {
+            let group = openTodos.filter { $0.assignedTo == assignee.id }
+            if !group.isEmpty { result.append((assignee.name, group)) }
         }
+
+        // Catch-all: unassigned or assigned to unknown user
+        let knownIDs = Set(assignees.map { $0.id })
+        let other = openTodos.filter {
+            $0.assignedTo == nil || !knownIDs.contains($0.assignedTo!)
+        }
+        if !other.isEmpty { result.append(("Other", other)) }
+
+        return result
     }
 
     func load() async {
